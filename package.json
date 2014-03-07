@@ -1,0 +1,20 @@
+{
+  "name": "duo-pack",
+  "version": "0.0.1",
+  "description": "browser pack",
+  "keywords": [],
+  "author": "matthew mueller <mattmuelle@gmail.com>",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/matthewmueller/duo-pack.git"
+  },
+  "dependencies": {
+    "co-write": "~0.3.0"
+  },
+  "devDependencies": {
+    "mocha": "*",
+    "should": "*",
+    "co": "~3.0.4"
+  },
+  "main": "lib/pack"
+}
