@@ -9,7 +9,8 @@
     "url": "git://github.com/matthewmueller/duo-pack.git"
   },
   "dependencies": {
-    "co-write": "~0.3.0"
+    "co-write": "~0.3.0",
+    "mkdirp": "^0.3.5"
   },
   "devDependencies": {
     "mocha": "*",
