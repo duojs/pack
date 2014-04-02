@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "co-write": "~0.3.0",
+    "combine-source-map": "^0.3.0",
     "mkdirp": "^0.3.5"
   },
   "devDependencies": {
