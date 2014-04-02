@@ -6,7 +6,7 @@ var co = require('co');
 var Pack = require('./');
 
 co(function *() {
-  var pack = Pack('build/build.js');
+  var pack = Pack('build/build.js', { debug: true });
   yield pack({ id: 'a', src: 'module.exports = "hi there"', deps: { 'b': 'b' }});
   yield pack({ id: 'b', src: 'module.exports = "whatever"', deps: {}}, true);
 })(done);
