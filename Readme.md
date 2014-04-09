@@ -11,7 +11,7 @@
 
 ```js
 co(function *() {
-  var pack = Pack('build.js');
+  var pack = Pack('build.js', { debug: true });
   yield pack({ id: 'a', src: 'module.exports = "hi there"', deps: { 'b': 'b' }});
   yield pack({ id: 'b', src: 'module.exports = "whatever"', deps: {}}, true);
 })();
