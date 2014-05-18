@@ -16,7 +16,9 @@
   "devDependencies": {
     "mocha": "*",
     "should": "*",
-    "co": "~3.0.4"
+    "co": "~3.0.4",
+    "co-mocha": "0.0.4",
+    "co-fs": "~1.2.0"
   },
   "main": "lib/pack"
 }
