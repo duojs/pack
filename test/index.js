@@ -38,14 +38,16 @@ describe('Pack', function(){
     yield fs.unlink('test/a.js');
   })
 
-  it('should expose all modules, so we can require from outside the build', function*(){
+  it('should expose all named modules, so we can require from outside the build', function*(){
     var pack = Pack();
     var js = '';
-    js += yield pack({ id: 'module', src: 'module.exports = [require("./utils"), require("dep")]', deps: { dep: 'dep', './utils': './utils' }});
-    js += yield pack({ id: './utils', src: 'module.exports = "utils"', deps: { dep: 'dep' }});
-    js += yield pack({ id: 'dep', src: 'module.exports = "dep"', deps: {} }, true);
-    console.log(js);
-    console.log(evaluate(js))
+    js += yield pack({ name: 'boot', id: 'module', entry: true, src: 'module.exports = [require("./utils"), require("dep")]', deps: { dep: 'dep', './utils': './utils' }});
+    js += yield pack({ name: 'boot-utils', id: './utils', src: 'module.exports = "utils"', deps: { dep: 'dep' }});
+    js += yield pack({ name: 'dep', id: 'dep', src: 'module.exports = "dep"', deps: {} }, true);
+    var require = evaluate(js);
+    assert.deepEqual(['utils', 'dep'], require('boot'));
+    assert('utils' == require('boot-utils'));
+    assert('dep' == require('dep'));
   })
 })
 
