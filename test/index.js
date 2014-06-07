@@ -8,7 +8,7 @@ describe('Pack', function(){
   it('should pack a module', function *(){
     var pack = Pack();
     var js = yield pack({ id: 'a', src: 'module.exports = "a"', deps: {} }, true);
-    assert('a' == evaluate(js)(1));
+    assert('a' == evaluate(js).require(1));
   })
 
   it('should pack multiple modules', function *(){
@@ -18,7 +18,7 @@ describe('Pack', function(){
     js += yield pack({ id: 'a', src: 'module.exports = "a"', deps: {} });
     js += yield pack({ id: 'b', src: 'module.exports = "b"', deps: { a: 'a' } }, true);
 
-    assert('b' == evaluate(js)(2));
+    assert('b' == evaluate(js).require(2));
   })
 
   it('should work with deps', function *(){
@@ -28,7 +28,7 @@ describe('Pack', function(){
     js += yield pack({ id: 'a', src: 'module.exports = "a"', deps: {} });
     js += yield pack({ id: 'b', src: 'module.exports = require("a")', deps: { a: 'a' } }, true);
 
-    assert('a' == evaluate(js)(2));
+    assert('a' == evaluate(js).require(2));
   })
 
   it('should stream to `path` if given', function *(){
@@ -44,15 +44,23 @@ describe('Pack', function(){
     js += yield pack({ name: 'boot', id: 'module', entry: true, src: 'module.exports = [require("./utils"), require("dep")]', deps: { dep: 'dep', './utils': './utils' }});
     js += yield pack({ name: 'boot-utils', id: './utils', src: 'module.exports = "utils"', deps: { dep: 'dep' }});
     js += yield pack({ name: 'dep', id: 'dep', src: 'module.exports = "dep"', deps: {} }, true);
-    var require = evaluate(js);
+    var require = evaluate(js).require;
     assert.deepEqual(['utils', 'dep'], require('boot'));
     assert('utils' == require('boot-utils'));
     assert('dep' == require('dep'));
+  })
+
+  it('should expose "global" to the global context', function*(){
+    var pack = Pack();
+    var js = '';
+    js += yield pack({ id: 'module', entry: true, src: 'module.exports = "module"', deps: {}, global: 'my-module' }, true);
+    var ctx = evaluate(js);
+    assert('module' == ctx['my-module']);
   })
 })
 
 function evaluate(js){
   var box = { console: console };
-  vm.runInNewContext('out =' + js, box, 'vm');
-  return box.out;
+  vm.runInNewContext('require =' + js, box, 'vm');
+  return box;
 }
