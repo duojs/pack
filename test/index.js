@@ -37,10 +37,22 @@ describe('Pack', function(){
     assert(js == (yield fs.readFile('test/a.js', 'utf8')));
     yield fs.unlink('test/a.js');
   })
+
+  it('should expose all named modules, so we can require from outside the build', function*(){
+    var pack = Pack();
+    var js = '';
+    js += yield pack({ name: 'boot', id: 'module', entry: true, src: 'module.exports = [require("./utils"), require("dep")]', deps: { dep: 'dep', './utils': './utils' }});
+    js += yield pack({ name: 'boot-utils', id: './utils', src: 'module.exports = "utils"', deps: { dep: 'dep' }});
+    js += yield pack({ name: 'dep', id: 'dep', src: 'module.exports = "dep"', deps: {} }, true);
+    var require = evaluate(js);
+    assert.deepEqual(['utils', 'dep'], require('boot'));
+    assert('utils' == require('boot-utils'));
+    assert('dep' == require('dep'));
+  })
 })
 
 function evaluate(js){
-  var box = {};
+  var box = { console: console };
   vm.runInNewContext('out =' + js, box, 'vm');
   return box.out;
 }
