@@ -57,6 +57,14 @@ describe('Pack', function(){
     var ctx = evaluate(js);
     assert('module' == ctx['my-module']);
   })
+
+  it('should not expse any globals by default', function*(){
+    var pack = Pack();
+    var js = yield pack({ id: 'module', entry: true, src: 'module.exports = "module"', deps: {} }, true);
+    var ctx = evaluate(js);
+    var globals = Object.keys(ctx);
+    assert.deepEqual(['console', 'require'], globals)
+  })
 })
 
 function evaluate(js){
