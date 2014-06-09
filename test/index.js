@@ -65,10 +65,21 @@ describe('Pack', function(){
     var globals = Object.keys(ctx);
     assert.deepEqual(['console', 'require'], globals)
   })
+
+  it('should not use previously defined require()s', function*(){
+    var pack = Pack();
+    var js = yield pack({ id: 'module', entry: true, src: 'module.exports = "module"', deps: {} }, true);
+    var ctx = evaluate(js, { require: require });
+    assert('module' == ctx.require(1));
+
+    function require(){
+      throw new Error('used previously defined require()');
+    }
+  })
 })
 
-function evaluate(js){
-  var box = { console: console };
+function evaluate(js, ctx){
+  var box = ctx || { console: console };
   vm.runInNewContext('require =' + js, box, 'vm');
   return box;
 }
