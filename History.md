@@ -1,4 +1,15 @@
 
+0.1.0 / 2014-06-10
+==================
+
+ * tests: make sure require() doesnt use any previously defined requires
+ * tests: add global check
+ * add global option
+ * add ability to require from outside the build
+ * cleanup require impl
+ * add tests
+ * return the source when path is not given, closes #2
+
 0.0.4 / 2014-04-09
 ==================
 
