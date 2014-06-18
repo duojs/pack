@@ -76,6 +76,18 @@ describe('Pack', function(){
       throw new Error('used previously defined require()');
     }
   })
+
+  it('should not contain sourcemaps by default', function*(){
+    var pack = Pack();
+    var js = yield pack({ id: 'm', entry: true, src: 'module.exports = "m"', deps: {} }, true);
+    assert(!~ js.indexOf('//# sourceMappingURL'));
+  })
+
+  it('should contain sourcemaps when `debug: true`', function*(){
+    var pack = Pack({ debug: true });
+    var js = yield pack({ id: 'm', entry: true, src: 'module.exports = "m"', deps: {} }, true);
+    assert(!! ~js.indexOf('//# sourceMappingURL'));
+  })
 })
 
 function evaluate(js, ctx){
