@@ -1,14 +1,4 @@
 /**
- * Module Dependencies
- */
-
-var path = require('path');
-var extname = path.extname;
-var co = require('co');
-var fs = require('co-fs');
-var join = path.join;
-
-/**
  * Expose `Pack`
  */
 
@@ -23,16 +13,18 @@ module.exports = Pack;
  * @api public
  */
 
-function Pack(root, mapping) {
-  if (!(this instanceof Pack)) return new Pack(root, mapping);
+function Pack(mapping) {
+  if (!(this instanceof Pack)) return new Pack(mapping);
   this.mapping = mapping;
   this.develop = false;
-  this.root = root;
-  this.symlinks = {};
 }
 
 /**
- * development
+ * Development
+ *
+ * @param {Boolean} develop
+ * @return {Pack}
+ * @api public
  */
 
 Pack.prototype.development = function(develop) {
