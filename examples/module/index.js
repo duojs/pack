@@ -19,14 +19,12 @@ var mapping = require(join(__dirname, 'components', 'duo.json'));
  * Initialize `duo-pack`
  */
 
-var pack = Pack(__dirname)
-  .into('build')
+var pack = Pack(__dirname, mapping)
+  .development();
 
 /**
  * Run `pack`
  */
 
-pack.pack(mapping, function(err, src) {
-  if (err) throw err;
-  console.log(src);
-});
+var src = pack.pack('main.js');
+console.log(src);
