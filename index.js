@@ -5,6 +5,13 @@
 module.exports = Pack;
 
 /**
+ * Default Packs
+ */
+
+var js = Pack.js = require('./lib/js');
+var css = Pack.css = require('./lib/css');
+
+/**
  * Initialize `Pack`
  *
  * @param {String} root
@@ -49,28 +56,28 @@ Pack.prototype.pack = function(entry) {
   this.symlinks = {};
   
   // ensure we have a fn for type
-  if (!this[type]) return false;
+  if (!Pack[type]) return false;
 
   // pack the source
-  return this[type](dep, mapping, this);
+  return Pack[type](dep, mapping, this).toString();
 };
 
-/**
- * Pack Javascript
- *
- * @param {String} id
- * @param {Object} mapping
- * @api private
- */
+// /**
+//  * Pack Javascript
+//  *
+//  * @param {String} id
+//  * @param {Object} mapping
+//  * @api private
+//  */
 
-Pack.prototype.js = require('./lib/js');
+// Pack.prototype.js = require('./lib/js');
 
-/**
- * Pack CSS
- *
- * @param {String} id
- * @param {Object} mapping
- * @api private
- */
+// /**
+//  * Pack CSS
+//  *
+//  * @param {String} id
+//  * @param {Object} mapping
+//  * @api private
+//  */
 
-Pack.prototype.css = require('./lib/css');
+// Pack.prototype.css = require('./lib/css');

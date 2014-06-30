@@ -18,7 +18,7 @@ describe('Pack', function(){
     map.b = { id: 'b', type: 'js', src: 'module.exports = "b"', deps: { a: 'a' } };
     var pack = Pack(map);
     var js = pack.pack('b');
-    assert('b' == evaluate(js).require(2));
+    assert('b' == evaluate(js).require(1));
   })
 
   it('should work with deps', function (){
@@ -27,7 +27,7 @@ describe('Pack', function(){
     map.b = { id: 'b', type: 'js', src: 'module.exports = require("a")', deps: { a: 'a' } };
     var pack = Pack(map);
     var js = pack.pack('b');
-    assert('a' == evaluate(js).require(2));
+    assert('a' == evaluate(js).require(1));
   })
 
   it('should expose "global" to the global context', function(){
@@ -55,7 +55,7 @@ describe('Pack', function(){
     var pack = Pack(map);
     var js = pack.pack('module');
     var ctx = evaluate(js, { require: require });
-    assert('module' == ctx.require(3));
+    assert('module' == ctx.require(1));
 
     function require(){
       throw new Error('used previously defined require()');

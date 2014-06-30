@@ -18,7 +18,7 @@ var mapping = require(join(__dirname, 'components', 'duo.json'));
  * Initialize `duo-pack`
  */
 
-var pack = Pack(__dirname, mapping)
+var pack = Pack(mapping)
   .development();
 
 /**
