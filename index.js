@@ -51,9 +51,6 @@ Pack.prototype.pack = function(entry) {
   var mapping = this.mapping;
   var dep = mapping[entry];
   var type = dep.type;
-
-  // reset symlinks
-  this.symlinks = {};
   
   // ensure we have a fn for type
   if (!Pack[type]) return false;
@@ -61,23 +58,3 @@ Pack.prototype.pack = function(entry) {
   // pack the source
   return Pack[type](dep, mapping, this).toString();
 };
-
-// /**
-//  * Pack Javascript
-//  *
-//  * @param {String} id
-//  * @param {Object} mapping
-//  * @api private
-//  */
-
-// Pack.prototype.js = require('./lib/js');
-
-// /**
-//  * Pack CSS
-//  *
-//  * @param {String} id
-//  * @param {Object} mapping
-//  * @api private
-//  */
-
-// Pack.prototype.css = require('./lib/css');
