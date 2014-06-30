@@ -1,7 +1,7 @@
 
 # duo-pack
 
-  browser packing for duo using generators. Based on [browser-pack](github.com/substack/browser-pack).
+  browser packing for duo. Supports JS & CSS
 
 ## Installation
 
@@ -10,11 +10,11 @@
 ## Example
 
 ```js
-co(function *() {
-  var pack = Pack('build.js', { debug: true });
-  yield pack({ id: 'a', src: 'module.exports = "hi there"', deps: { 'b': 'b' }});
-  yield pack({ id: 'b', src: 'module.exports = "whatever"', deps: {}}, true);
-})();
+var mapping = require('./components/duo.json');
+var pack = Pack(mapping);
+
+var js = pack.pack('main.js');
+var css = pack.pack('main.js');
 ```
 
 ## License
