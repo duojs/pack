@@ -1,4 +1,5 @@
 
+var read = require('fs').readFileSync;
 var assert = require('assert');
 var fs = require('co-fs');
 var Pack = require('..');
@@ -71,11 +72,11 @@ describe('Pack', function(){
   })
 
   it('should contain sourcemaps when development is set', function(){
-    var map = {};
-    map.m = { id: 'm', type: 'js', entry: true, src: 'module.exports = "m"', deps: {} };
+    var map = require('./fixtures/sourcemaps');
+    var expected = read(__dirname + '/fixtures/sourcemaps.out.js');
     var pack = Pack(map).development();
     var js = pack.pack('m');
-    assert(!! ~js.indexOf('//# sourceMappingURL'));
+    assert.equal(js.trim(), expected.toString().trim());
   })
 })
 
