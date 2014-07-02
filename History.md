@@ -1,5 +1,12 @@
 
-1.0.0 / 2014-06-30 
+1.0.1 / 2014-07-02
+==================
+
+ * tests: add sourcemaps test
+ * fix: sourcemaps
+ * add dev deps
+
+1.0.0 / 2014-06-30
 ==================
 
  * refactored lib and api
