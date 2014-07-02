@@ -1,0 +1,16 @@
+{
+  "name": "bind",
+  "repo": "ianstormtaylor/bind",
+  "license": "MIT",
+  "version": "0.0.2",
+  "description": "A clear API for function binding helpers.",
+  "keywords": ["function", "bind", "method", "all"],
+  "dependencies": {
+    "component/bind": "*",
+    "segmentio/bind-all": "*"
+  },
+  "development": {
+    "component/assert": "*"
+  },
+  "scripts": ["index.js"]
+}

@@ -13,7 +13,9 @@
     "file-deps": "0.0.5"
   },
   "devDependencies": {
-    "mocha": "*"
+    "mocha": "*",
+    "co-mocha": "*",
+    "co-fs": "*"
   },
   "main": "index.js"
 }

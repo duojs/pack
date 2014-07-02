@@ -1,0 +1,12 @@
+{
+  "name": "bind",
+  "repository": "ianstormtaylor/bind",
+  "license": "MIT",
+  "version": "0.0.2",
+  "description": "A clear API for function binding helpers.",
+  "keywords": ["function", "bind", "method", "all"],
+  "dependencies": {
+    "bind-component": "0.0.1",
+    "bind-all": "0.0.2"
+  }
+}
