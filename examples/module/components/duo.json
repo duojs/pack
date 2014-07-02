@@ -1,0 +1,46 @@
+{
+  "main.js": {
+    "deps": {
+      "ianstormtaylor/bind@0.0.2/index.js": "components/ianstormtaylor-bind@0.0.2/index.js"
+    },
+    "mtime": 1404313167000,
+    "entry": true,
+    "id": "main.js",
+    "type": "js",
+    "src": "\nvar bind = require('ianstormtaylor/bind@0.0.2/index.js');\ndebugger;\nconsole.log(bind);\n"
+  },
+  "components/ianstormtaylor-bind@0.0.2/index.js": {
+    "deps": {
+      "bind": "components/component-bind@1.0.0/index.js",
+      "bind-all": "components/segmentio-bind-all@0.0.2/index.js"
+    },
+    "mtime": 1381274447000,
+    "id": "components/ianstormtaylor-bind@0.0.2/index.js",
+    "type": "js",
+    "src": "\ntry {\n  var bind = require('bind');\n} catch (e) {\n  var bind = require('bind-component');\n}\n\nvar bindAll = require('bind-all');\n\n\n/**\n * Expose `bind`.\n */\n\nmodule.exports = exports = bind;\n\n\n/**\n * Expose `bindAll`.\n */\n\nexports.all = bindAll;\n\n\n/**\n * Expose `bindMethods`.\n */\n\nexports.methods = bindMethods;\n\n\n/**\n * Bind `methods` on `obj` to always be called with the `obj` as context.\n *\n * @param {Object} obj\n * @param {String} methods...\n */\n\nfunction bindMethods (obj, methods) {\n  methods = [].slice.call(arguments, 1);\n  for (var i = 0, method; method = methods[i]; i++) {\n    obj[method] = bind(obj, obj[method]);\n  }\n  return obj;\n}"
+  },
+  "components/component-bind@1.0.0/index.js": {
+    "deps": {},
+    "mtime": 1401232080000,
+    "id": "components/component-bind@1.0.0/index.js",
+    "type": "js",
+    "src": "/**\n * Slice reference.\n */\n\nvar slice = [].slice;\n\n/**\n * Bind `obj` to `fn`.\n *\n * @param {Object} obj\n * @param {Function|String} fn or string\n * @return {Function}\n * @api public\n */\n\nmodule.exports = function(obj, fn){\n  if ('string' == typeof fn) fn = obj[fn];\n  if ('function' != typeof fn) throw new Error('bind() requires a function');\n  var args = slice.call(arguments, 2);\n  return function(){\n    return fn.apply(obj, args.concat(slice.call(arguments)));\n  }\n};\n"
+  },
+  "components/segmentio-bind-all@0.0.2/index.js": {
+    "deps": {
+      "bind": "components/component-bind@1.0.0/index.js",
+      "type": "components/component-type@1.0.0/index.js"
+    },
+    "mtime": 1381274255000,
+    "id": "components/segmentio-bind-all@0.0.2/index.js",
+    "type": "js",
+    "src": "\ntry {\n  var bind = require('bind');\n  var type = require('type');\n} catch (e) {\n  var bind = require('bind-component');\n  var type = require('type-component');\n}\n\nmodule.exports = function (obj) {\n  for (var key in obj) {\n    var val = obj[key];\n    if (type(val) === 'function') obj[key] = bind(obj, obj[key]);\n  }\n  return obj;\n};"
+  },
+  "components/component-type@1.0.0/index.js": {
+    "deps": {},
+    "mtime": 1363138036000,
+    "id": "components/component-type@1.0.0/index.js",
+    "type": "js",
+    "src": "\n/**\n * toString ref.\n */\n\nvar toString = Object.prototype.toString;\n\n/**\n * Return the type of `val`.\n *\n * @param {Mixed} val\n * @return {String}\n * @api public\n */\n\nmodule.exports = function(val){\n  switch (toString.call(val)) {\n    case '[object Function]': return 'function';\n    case '[object Date]': return 'date';\n    case '[object RegExp]': return 'regexp';\n    case '[object Arguments]': return 'arguments';\n    case '[object Array]': return 'array';\n    case '[object String]': return 'string';\n  }\n\n  if (val === null) return 'null';\n  if (val === undefined) return 'undefined';\n  if (val && val.nodeType === 1) return 'element';\n  if (val === Object(val)) return 'object';\n\n  return typeof val;\n};\n"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "name": "bind-all",
+  "repository": "https://github.com/segmentio/bind-all.git",
+  "version": "0.0.2",
+  "dependencies": {
+    "bind-component": "0.0.1",
+    "type-component": "0.0.1"
+  },
+  "devDependencies": {
+    "mocha": "*",
+    "should": "*"
+  }
+}
