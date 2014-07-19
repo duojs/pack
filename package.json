@@ -10,12 +10,18 @@
   },
   "dependencies": {
     "combine-source-map": "^0.3.0",
-    "file-deps": "0.0.5"
+    "file-deps": "0.0.5",
+    "generator-supported": "0.0.1"
   },
   "devDependencies": {
-    "mocha": "*",
+    "mocha": "~1.20.1",
     "co-mocha": "*",
-    "co-fs": "*"
+    "co-fs": "~1.2.0",
+    "regenerator": "~0.4.10"
   },
-  "main": "index.js"
+  "main": "index.js",
+  "scripts": {
+    "test": "NODE=gnode make test",
+    "prepublish": "make build"
+  }
 }
