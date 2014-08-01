@@ -10,7 +10,8 @@
   },
   "dependencies": {
     "combine-source-map": "^0.3.0",
-    "file-deps": "0.0.x"
+    "file-deps": "0.0.x",
+    "gnode": "0.0.8"
   },
   "devDependencies": {
     "mocha": "*",
