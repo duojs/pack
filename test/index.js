@@ -106,6 +106,30 @@ describe('Pack', function(){
     assert('object' == typeof evaluate(js).require(1));
   })
 
+  it('should add symlinked paths for non-supported files', function() {
+    var map = {};
+    map.a = { id: 'a', type: 'css', entry: true, src: 'section { background: url("./b.png"); }', deps: { './b.png': 'b' }};
+    map.b = { id: 'b', type: 'png', deps: {} };
+    var pack = Pack(map);
+    var css = pack.pack('a');
+    assert('section { background: url("/b"); }' == css);
+  })
+
+  it('should ignore http paths as urls', function() {
+    var map = {};
+    map.a = { id: 'a', type: 'css', entry: true, src: 'section { background: url("http://google.com"); }', deps: {}};
+    var pack = Pack(map);
+    var css = pack.pack('a');
+    assert('section { background: url("http://google.com"); }' == css);
+  })
+
+  it('should ignore http paths as @imports', function() {
+    var map = {};
+    map.a = { id: 'a', type: 'css', entry: true, src: '@import url("http://google.com");', deps: {}};
+    var pack = Pack(map);
+    var css = pack.pack('a');
+    assert('@import url("http://google.com");' == css);
+  })
 })
 
 function evaluate(js, ctx){
