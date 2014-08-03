@@ -40,7 +40,7 @@ describe('Pack', function(){
     assert('module' == ctx['my-module']);
   })
 
-  it('should not expse any globals by default', function(){
+  it('should not expose any globals by default', function(){
     var map = {};
     map.module = { id: 'module', type: 'js', entry: true, src: 'module.exports = "module"', deps: {} };
     var pack = Pack(map);
@@ -78,6 +78,34 @@ describe('Pack', function(){
     var js = pack.pack('m');
     assert.equal(js.trim(), expected.toString().trim());
   })
+
+  it('should handle css files', function() {
+    var map = {};
+    map.a = { id: 'a', type: 'css', entry: true, src: '@import "./b.css";\n\nbody {}', deps: { './b.css': 'b' }};
+    map.b = { id: 'b', type: 'css', src: 'h1 { color: red; }', deps: {} };
+    var pack = Pack(map);
+    var css = pack.pack('a');
+    assert('h1 { color: red; }\n\nbody {}' == css)
+  })
+
+  it('should handle empty css files', function() {
+    var map = {};
+    map.a = { id: 'a', type: 'css', entry: true, src: '@import "./b.css";\n\nbody {}', deps: { './b.css': 'b' }};
+    map.b = { id: 'b', type: 'css', src: '', deps: {} };
+    var pack = Pack(map);
+    var css = pack.pack('a');
+    assert('\n\nbody {}' == css)
+  })
+
+  it('should handle empty js files', function() {
+    var map = {};
+    map.a = { id: 'a', type: 'js', src: '', deps: {} };
+    map.b = { id: 'b', type: 'js', src: 'module.exports = require("a")', deps: { a: 'a' } };
+    var pack = Pack(map);
+    var js = pack.pack('b');
+    assert('object' == typeof evaluate(js).require(1));
+  })
+
 })
 
 function evaluate(js, ctx){
