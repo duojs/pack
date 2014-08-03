@@ -1,4 +1,11 @@
 
+1.0.2 / 2014-08-03
+==================
+
+ * bump file-deps to fix symlinks and improve test coverage
+ * fix for empty css files
+ * test: Fix sourcemap fixture
+
 1.0.1 / 2014-07-02
 ==================
 
