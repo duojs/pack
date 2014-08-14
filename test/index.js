@@ -130,6 +130,15 @@ describe('Pack', function(){
     var css = pack.pack('a');
     assert('@import url("http://google.com");' == css);
   })
+
+  it('should only append the first @import if there are duplicates', function() {
+    var map = {};
+    map.a = { id: 'a', type: 'css', entry: true, src: '@import "./b.css";\n@import "./b.css";\n.a {}', deps: { './b.css': 'b' }};
+    map.b = { id: 'b', type: 'css', src: '.b {}', deps: {} };
+    var pack = Pack(map);
+    var css = pack.pack('a');
+    assert.equal('.b {}\n\n.a {}', css);
+  })
 })
 
 function evaluate(js, ctx){
