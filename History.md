@@ -1,4 +1,9 @@
 
+1.0.4 / 2014-08-20
+==================
+
+ * use relative paths for copied/symlinked assets
+
 1.0.3 / 2014-08-16
 ==================
 
