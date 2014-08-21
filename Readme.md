@@ -45,7 +45,7 @@ CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
 TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-[npm-image]: https://img.shields.io/npm/v/duo-package.svg?style=flat
-[npm-url]: https://npmjs.org/package/duo-package
-[travis-image]: https://img.shields.io/travis/duojs/package.svg?style=flat
-[travis-url]: https://travis-ci.org/duojs/package
+[npm-image]: https://img.shields.io/npm/v/duo-pack.svg?style=flat
+[npm-url]: https://npmjs.org/package/duo-pack
+[travis-image]: https://img.shields.io/travis/duojs/pack.svg?style=flat
+[travis-url]: https://travis-ci.org/duojs/pack
