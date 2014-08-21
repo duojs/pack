@@ -1,6 +1,9 @@
 
 # duo-pack
 
+[![NPM version][npm-image]][npm-url]
+[![build status][travis-image]][travis-url]
+
   browser packing for duo. Supports JS & CSS
 
 ## Installation
@@ -41,3 +44,8 @@ IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
 CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
 TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+[npm-image]: https://img.shields.io/npm/v/duo-package.svg?style=flat
+[npm-url]: https://npmjs.org/package/duo-package
+[travis-image]: https://img.shields.io/travis/duojs/package.svg?style=flat
+[travis-url]: https://travis-ci.org/duojs/package
