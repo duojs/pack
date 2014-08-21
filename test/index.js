@@ -139,6 +139,15 @@ describe('Pack', function(){
     var css = pack.pack('a');
     assert.equal('.b {}\n\n.a {}', css);
   })
+
+  it('should keep duplicate assets', function() {
+    var map = {};
+    map.a = { id: 'a', type: 'css', entry: true, src: 'section { background: url("./b.png"); } main { background: url("./b.png"); }', deps: { './b.png': 'b' }};
+    map.b = { id: 'b.png', type: 'png', deps: {} };
+    var pack = Pack(map);
+    var css = pack.pack('a');
+    assert('section { background: url("b.png"); } main { background: url("b.png"); }' == css);
+  })
 })
 
 function evaluate(js, ctx){
