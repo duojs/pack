@@ -1,4 +1,15 @@
 
+n.n.n / 2014-08-26 
+==================
+
+ * do not duplicate different @import deps that resolve to the same source
+ * support node 0.10.x using $ mocha
+ * Merge pull request #17 from duojs/node_0.10
+ * Makefile: Reorder targets
+ * Makefile: fix test target
+ * using gnode for node 0.10 backwards compat
+ * cleaning up the makefile some, using gnode to run tests
+
 1.0.5 / 2014-08-20
 ==================
 
