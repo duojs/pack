@@ -148,6 +148,15 @@ describe('Pack', function(){
     var css = pack.pack('a');
     assert('section { background: url("b.png"); } main { background: url("b.png"); }' == css);
   })
+
+  it('should not duplicate when deps points to the same thing', function() {
+    var map = {};
+    map.a = { id: 'a', type: 'css', entry: true, src: '@import "logo/logo";\n@import "logo/logo@*";\n.a {}', deps: { 'logo/logo': 'logo', 'logo/logo@*': 'logo' }};
+    map.logo = { id: 'logo', type: 'css', src: '.logo {}', deps: {} };
+    var pack = Pack(map);
+    var css = pack.pack('a');
+    assert.equal('.logo {}\n\n.a {}', css);
+  })
 })
 
 function evaluate(js, ctx){
