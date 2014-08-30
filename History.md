@@ -1,5 +1,10 @@
 
-n.n.n / 2014-08-26 
+1.0.7 / 2014-08-30
+==================
+
+ * css assets should be relative to the entry
+
+1.0.6 / 2014-08-26
 ==================
 
  * do not duplicate different @import deps that resolve to the same source
