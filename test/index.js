@@ -157,6 +157,15 @@ describe('Pack', function(){
     var css = pack.pack('a');
     assert.equal('.logo {}\n\n.a {}', css);
   })
+
+  it('should make css assets relative to the entry', function() {
+    var map = {};
+    map['some/dir/a'] = { id: 'some/dir/a', type: 'css', entry: true, src: 'section { background: url("./images/b.png"); }', deps: { './images/b.png': 'some/dir/images/b.png' }};
+    map['some/dir/images/b.png'] = { id: 'some/dir/images/b.png', type: 'png', deps: {} };
+    var pack = Pack(map);
+    var css = pack.pack('some/dir/a');
+    assert.equal('section { background: url("images/b.png"); }', css);
+  })
 })
 
 function evaluate(js, ctx){
