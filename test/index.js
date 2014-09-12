@@ -158,6 +158,16 @@ describe('Pack', function(){
     assert.equal('.logo {}\n\n.a {}', css);
   })
 
+  it('should not duplicate deps across local files', function() {
+    var map = {};
+    map['one.css'] = { id: 'one.css', type: 'css', src: '@import "./two.css"; div { content: "one"; }', deps: { './two.css': 'two.css' } };
+    map['two.css'] = { id: 'two.css', type: 'css', src: 'div { content: "two"; }' };
+    map['index.css'] = { id: 'index.css', type: 'css', entry: true, src: '@import "./one.css"; @import "./two.css";', deps: { './one.css': 'one.css', './two.css': 'two.css' } };
+    var pack = Pack(map);
+    var css = pack.pack('index.css');
+    assert.equal('div { content: "two"; } div { content: "one"; }', css.trim());
+  })
+
   it('should make css assets relative to the entry', function() {
     var map = {};
     map['some/dir/a'] = { id: 'some/dir/a', type: 'css', entry: true, src: 'section { background: url("./images/b.png"); }', deps: { './images/b.png': 'some/dir/images/b.png' }};
