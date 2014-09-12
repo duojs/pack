@@ -1,4 +1,9 @@
 
+1.0.8 / 2014-09-12
+==================
+
+ * fix css getting included twice. see: https://github.com/duojs/duo/issues/321
+
 1.0.7 / 2014-08-30
 ==================
 
