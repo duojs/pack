@@ -11,7 +11,7 @@
   "dependencies": {
     "combine-source-map": "^0.3.0",
     "file-deps": "0.0.x",
-    "gnode": "0.0.8"
+    "gnode": "^0.1.0"
   },
   "devDependencies": {
     "mocha": "*",
