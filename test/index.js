@@ -1,6 +1,8 @@
 
 var read = require('fs').readFileSync;
 var assert = require('assert');
+var sourcemap = require('source-map');
+var SourceMapConsumer = sourcemap.SourceMapConsumer;
 var fs = require('co-fs');
 var Pack = require('..');
 var vm = require('vm');
@@ -73,10 +75,11 @@ describe('Pack', function(){
 
   it('should contain sourcemaps when development is set', function(){
     var map = require('./fixtures/sourcemaps');
-    var expected = read(__dirname + '/fixtures/sourcemaps.out.js');
-    var pack = Pack(map).development();
-    var js = pack.pack('m');
-    assert.equal(js.trim(), expected.toString().trim());
+    var js = Pack(map).development().pack('m');
+    var raw = rawSourceMap(js);
+    var smc = new SourceMapConsumer(raw);
+    var actual = smc.sourceContentFor('m');
+    assert.equal(map.m.src, actual);
   })
 
   it('should handle css files', function() {
@@ -182,4 +185,20 @@ function evaluate(js, ctx){
   var box = ctx || { console: console };
   vm.runInNewContext('require =' + js, box, 'vm');
   return box;
+}
+
+/**
+ * Extract the "raw" sourcemap from the given `js`.
+ *
+ * @param {String} js
+ * @return {Object}
+ * @api private
+ */
+
+function rawSourceMap(js) {
+  var marker = '//# sourceMappingURL=data:application/json;base64,';
+  var i = js.indexOf(marker);
+  var str = js.slice(i + marker.length);
+  var buf = new Buffer(str, 'base64');
+  return JSON.parse(buf);
 }
