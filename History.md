@@ -1,4 +1,13 @@
 
+1.0.9 / 2014-09-24
+==================
+
+ * Fixed: sourcemap off-by-one (@ryanfields)
+ * Added: Travis
+ * Fixed: sourcemap test (@stephenmathieson)
+ * Fixed: Don't expose file info in sourcemap (@stephenmathieson)
+ * Update: gnode
+
 1.0.8 / 2014-09-12
 ==================
 
