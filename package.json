@@ -14,9 +14,10 @@
     "gnode": "^0.1.0"
   },
   "devDependencies": {
-    "mocha": "*",
+    "co-fs": "*",
     "co-mocha": "*",
-    "co-fs": "*"
+    "mocha": "*",
+    "source-map": "^0.1.39"
   },
   "main": "index.js"
 }
