@@ -18,5 +18,8 @@
     "co-mocha": "*",
     "co-fs": "*"
   },
-  "main": "index.js"
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha --harmony-generators"
+  }
 }
