@@ -19,5 +19,8 @@
     "mocha": "*",
     "source-map": "^0.1.39"
   },
-  "main": "index.js"
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha --harmony-generators"
+  }
 }
