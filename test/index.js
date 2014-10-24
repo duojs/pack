@@ -52,6 +52,38 @@ describe('Pack', function(){
     assert.deepEqual(['console', 'require'], globals)
   })
 
+  it('should support umd (amd)', function(){
+    var defs = [];
+    var map = {};
+    map.module = { id: 'module', type: 'js', entry: true, src: 'module.exports = [];', deps: {}, name: 'module' };
+    var define = defs.push.bind(defs);
+    define.amd = true;
+    var pack = Pack(map, { umd: true });
+    var js = pack.pack('module');
+    var ctx = evaluate(js, { define: define });
+    assert(Array.isArray(defs[0]()));
+  })
+
+  it('should support umd (commonjs)', function(){
+    var mod = { exports: {} };
+    var map = {};
+    map.module = { id: 'module', type: 'js', entry: true, src: 'module.exports = []', deps: {}, name: 'module' };
+    var pack = Pack(map, { umd: true });
+    var js = pack.pack('module');
+    var ctx = evaluate(js, { module: mod, exports: mod.exports });
+    assert(Array.isArray(ctx.module.exports));
+  });
+
+  it('should support umd (global)', function(){
+    var global = {};
+    var map = {};
+    map.module = { id: 'module', type: 'js', entry: true, src: 'module.exports = []', deps: {}, name: 'module' };
+    var pack = Pack(map, { umd: true });
+    var js = pack.pack('module');
+    var ctx = evaluate(js, global);
+    assert(Array.isArray(ctx.module));
+  });
+
   it('should not use previously defined require()s', function(){
     var map = {};
     map.module = { id: 'module', type: 'js', entry: true, src: 'module.exports = "module"', deps: {} };

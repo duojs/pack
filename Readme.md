@@ -13,8 +13,20 @@
 ## Example
 
 ```js
+// Simple.
+
 var mapping = require('./components/duo.json');
 var pack = Pack(mapping);
+
+var js = pack.pack('main.js');
+var css = pack.pack('main.js');
+```
+
+```js
+// UMD.
+
+var mapping = require('./components/duo.json');
+var pack = Pack(mapping, { umd: true });
 
 var js = pack.pack('main.js');
 var css = pack.pack('main.js');
