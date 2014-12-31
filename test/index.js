@@ -64,6 +64,18 @@ describe('Pack', function(){
     assert(Array.isArray(defs[0]()));
   })
 
+  it('should support umd (commonjs by seajs)', function(){
+    var defs = [];
+    var map = {};
+    map.module = { id: 'module', type: 'js', entry: true, src: 'module.exports = [];', deps: {}, name: 'module' };
+    var define = defs.push.bind(defs);
+    define.cmd = true;
+    var pack = Pack(map, { umd: true });
+    var js = pack.pack('module');
+    var ctx = evaluate(js, { define: define });
+    assert(Array.isArray(defs[0]()));
+  })
+
   it('should support umd (commonjs)', function(){
     var mod = { exports: {} };
     var map = {};
