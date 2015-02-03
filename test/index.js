@@ -223,6 +223,15 @@ describe('Pack', function(){
     var css = pack.pack('some/dir/a');
     assert.equal('section { background: url("images/b.png"); }', css);
   })
+
+  it('should not cache broken packages', function() {
+    var map = require('./fixtures/error-cache');
+    var pack = Pack(map);
+    var js = pack.pack('a');
+
+    var ret = evaluate(js).require(1);
+    assert.strictEqual(ret.b1, ret.b2);
+  })
 })
 
 function evaluate(js, ctx){
