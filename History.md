@@ -1,13 +1,18 @@
 
+1.0.12 / 2015-03-01
+===================
+
+  * Merging inline source-maps into the final source-map
+
 1.0.11 / 2015-01-08
-==================
+===================
 
   * Applies wrapper offset to sourcemaps
   * add test for seajs(cmd) support
   * add seajs(cmd) support
 
 1.0.10 / 2014-10-24
-==================
+===================
 
   * add umd support
 
