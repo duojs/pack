@@ -9,7 +9,7 @@
     "url": "git://github.com/matthewmueller/duo-pack.git"
   },
   "dependencies": {
-    "combine-source-map": "^0.3.0",
+    "combine-source-map": "^0.4.0",
     "file-deps": "0.0.x",
     "gnode": "^0.1.0"
   },

@@ -122,7 +122,7 @@ describe('Pack', function(){
     var js = Pack(map).development().pack('m');
     var raw = rawSourceMap(js);
     var smc = new SourceMapConsumer(raw);
-    var actual = smc.sourceContentFor('m');
+    var actual = smc.sourceContentFor('/duo/m');
     assert.equal(map.m.src, actual);
   })
 
