@@ -1,4 +1,9 @@
 
+2.0.0 / 2015-03-02
+==================
+
+  * Returning a `{ code, map }` object instead of raw `String` (to work towards external source-maps)
+
 1.0.12 / 2015-03-01
 ===================
 
