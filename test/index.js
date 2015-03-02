@@ -1,8 +1,6 @@
 
 var read = require('fs').readFileSync;
 var assert = require('assert');
-var sourcemap = require('source-map');
-var SourceMapConsumer = sourcemap.SourceMapConsumer;
 var fs = require('co-fs');
 var Pack = require('..');
 var vm = require('vm');
@@ -12,7 +10,7 @@ describe('Pack', function(){
     var map = { 'a' : { id: 'a', type: 'js', src: 'module.exports = "a"', deps: {} }};
     var pack = Pack(map);
     var js = pack.pack('a');
-    assert('a' == evaluate(js).require(1));
+    assert('a' == evaluate(js.code).require(1));
   })
 
   it('should pack multiple modules', function (){
@@ -21,7 +19,7 @@ describe('Pack', function(){
     map.b = { id: 'b', type: 'js', src: 'module.exports = "b"', deps: { a: 'a' } };
     var pack = Pack(map);
     var js = pack.pack('b');
-    assert('b' == evaluate(js).require(1));
+    assert('b' == evaluate(js.code).require(1));
   })
 
   it('should work with deps', function (){
@@ -30,7 +28,7 @@ describe('Pack', function(){
     map.b = { id: 'b', type: 'js', src: 'module.exports = require("a")', deps: { a: 'a' } };
     var pack = Pack(map);
     var js = pack.pack('b');
-    assert('a' == evaluate(js).require(1));
+    assert('a' == evaluate(js.code).require(1));
   })
 
   it('should expose "global" to the global context', function(){
@@ -38,7 +36,7 @@ describe('Pack', function(){
     map.module = { id: 'module', type: 'js', entry: true, src: 'module.exports = "module"', deps: {}, global: 'my-module' };
     var pack = Pack(map);
     var js = pack.pack('module');
-    var ctx = evaluate(js);
+    var ctx = evaluate(js.code);
     assert('module' == ctx['my-module']);
   })
 
@@ -47,7 +45,7 @@ describe('Pack', function(){
     map.module = { id: 'module', type: 'js', entry: true, src: 'module.exports = "module"', deps: {} };
     var pack = Pack(map);
     var js = pack.pack('module');
-    var ctx = evaluate(js);
+    var ctx = evaluate(js.code);
     var globals = Object.keys(ctx);
     assert.deepEqual(['console', 'require'], globals)
   })
@@ -60,7 +58,7 @@ describe('Pack', function(){
     define.amd = true;
     var pack = Pack(map, { umd: true });
     var js = pack.pack('module');
-    var ctx = evaluate(js, { define: define });
+    var ctx = evaluate(js.code, { define: define });
     assert(Array.isArray(defs[0]()));
   })
 
@@ -72,7 +70,7 @@ describe('Pack', function(){
     define.cmd = true;
     var pack = Pack(map, { umd: true });
     var js = pack.pack('module');
-    var ctx = evaluate(js, { define: define });
+    var ctx = evaluate(js.code, { define: define });
     assert(Array.isArray(defs[0]()));
   })
 
@@ -82,7 +80,7 @@ describe('Pack', function(){
     map.module = { id: 'module', type: 'js', entry: true, src: 'module.exports = []', deps: {}, name: 'module' };
     var pack = Pack(map, { umd: true });
     var js = pack.pack('module');
-    var ctx = evaluate(js, { module: mod, exports: mod.exports });
+    var ctx = evaluate(js.code, { module: mod, exports: mod.exports });
     assert(Array.isArray(ctx.module.exports));
   });
 
@@ -92,7 +90,7 @@ describe('Pack', function(){
     map.module = { id: 'module', type: 'js', entry: true, src: 'module.exports = []', deps: {}, name: 'module' };
     var pack = Pack(map, { umd: true });
     var js = pack.pack('module');
-    var ctx = evaluate(js, global);
+    var ctx = evaluate(js.code, global);
     assert(Array.isArray(ctx.module));
   });
 
@@ -101,7 +99,7 @@ describe('Pack', function(){
     map.module = { id: 'module', type: 'js', entry: true, src: 'module.exports = "module"', deps: {} };
     var pack = Pack(map);
     var js = pack.pack('module');
-    var ctx = evaluate(js, { require: require });
+    var ctx = evaluate(js.code, { require: require });
     assert('module' == ctx.require(1));
 
     function require(){
@@ -114,16 +112,13 @@ describe('Pack', function(){
     map.m = { id: 'm', type: 'js', entry: true, src: 'module.exports = "m"', deps: {} }
     var pack = Pack(map);
     var js = pack.pack('m');
-    assert(!~ js.indexOf('//# sourceMappingURL'));
+    assert(!js.map);
   })
 
   it('should contain sourcemaps when development is set', function(){
     var map = require('./fixtures/sourcemaps');
     var js = Pack(map).development().pack('m');
-    var raw = rawSourceMap(js);
-    var smc = new SourceMapConsumer(raw);
-    var actual = smc.sourceContentFor('/duo/m');
-    assert.equal(map.m.src, actual);
+    assert(map.m.src == js.map.sourcesContent[js.map.sources.indexOf('/duo/m')]);
   })
 
   it('should handle css files', function() {
@@ -132,7 +127,7 @@ describe('Pack', function(){
     map.b = { id: 'b', type: 'css', src: 'h1 { color: red; }', deps: {} };
     var pack = Pack(map);
     var css = pack.pack('a');
-    assert('h1 { color: red; }\n\nbody {}' == css)
+    assert('h1 { color: red; }\n\nbody {}' == css.code)
   })
 
   it('should handle empty css files', function() {
@@ -141,7 +136,7 @@ describe('Pack', function(){
     map.b = { id: 'b', type: 'css', src: '', deps: {} };
     var pack = Pack(map);
     var css = pack.pack('a');
-    assert('\n\nbody {}' == css)
+    assert('\n\nbody {}' == css.code)
   })
 
   it('should handle empty js files', function() {
@@ -150,7 +145,7 @@ describe('Pack', function(){
     map.b = { id: 'b', type: 'js', src: 'module.exports = require("a")', deps: { a: 'a' } };
     var pack = Pack(map);
     var js = pack.pack('b');
-    assert('object' == typeof evaluate(js).require(1));
+    assert('object' == typeof evaluate(js.code).require(1));
   })
 
   it('should add copy/symlink paths for non-supported files', function() {
@@ -159,7 +154,7 @@ describe('Pack', function(){
     map.b = { id: 'b', type: 'png', deps: {} };
     var pack = Pack(map);
     var css = pack.pack('a');
-    assert('section { background: url("b"); }' == css);
+    assert('section { background: url("b"); }' == css.code);
   })
 
   it('should ignore http paths as urls', function() {
@@ -167,7 +162,7 @@ describe('Pack', function(){
     map.a = { id: 'a', type: 'css', entry: true, src: 'section { background: url("http://google.com"); }', deps: {}};
     var pack = Pack(map);
     var css = pack.pack('a');
-    assert('section { background: url("http://google.com"); }' == css);
+    assert('section { background: url("http://google.com"); }' == css.code);
   })
 
   it('should ignore http paths as @imports', function() {
@@ -175,7 +170,7 @@ describe('Pack', function(){
     map.a = { id: 'a', type: 'css', entry: true, src: '@import url("http://google.com");', deps: {}};
     var pack = Pack(map);
     var css = pack.pack('a');
-    assert('@import url("http://google.com");' == css);
+    assert('@import url("http://google.com");' == css.code);
   })
 
   it('should only append the first @import if there are duplicates', function() {
@@ -184,7 +179,7 @@ describe('Pack', function(){
     map.b = { id: 'b', type: 'css', src: '.b {}', deps: {} };
     var pack = Pack(map);
     var css = pack.pack('a');
-    assert.equal('.b {}\n\n.a {}', css);
+    assert.equal('.b {}\n\n.a {}', css.code);
   })
 
   it('should keep duplicate assets', function() {
@@ -193,7 +188,7 @@ describe('Pack', function(){
     map.b = { id: 'b.png', type: 'png', deps: {} };
     var pack = Pack(map);
     var css = pack.pack('a');
-    assert('section { background: url("b.png"); } main { background: url("b.png"); }' == css);
+    assert('section { background: url("b.png"); } main { background: url("b.png"); }' == css.code);
   })
 
   it('should not duplicate when deps points to the same thing', function() {
@@ -202,7 +197,7 @@ describe('Pack', function(){
     map.logo = { id: 'logo', type: 'css', src: '.logo {}', deps: {} };
     var pack = Pack(map);
     var css = pack.pack('a');
-    assert.equal('.logo {}\n\n.a {}', css);
+    assert.equal('.logo {}\n\n.a {}', css.code);
   })
 
   it('should not duplicate deps across local files', function() {
@@ -212,7 +207,7 @@ describe('Pack', function(){
     map['index.css'] = { id: 'index.css', type: 'css', entry: true, src: '@import "./one.css"; @import "./two.css";', deps: { './one.css': 'one.css', './two.css': 'two.css' } };
     var pack = Pack(map);
     var css = pack.pack('index.css');
-    assert.equal('div { content: "two"; } div { content: "one"; }', css.trim());
+    assert.equal('div { content: "two"; } div { content: "one"; }', css.code.trim());
   })
 
   it('should make css assets relative to the entry', function() {
@@ -221,7 +216,7 @@ describe('Pack', function(){
     map['some/dir/images/b.png'] = { id: 'some/dir/images/b.png', type: 'png', deps: {} };
     var pack = Pack(map);
     var css = pack.pack('some/dir/a');
-    assert.equal('section { background: url("images/b.png"); }', css);
+    assert.equal('section { background: url("images/b.png"); }', css.code);
   })
 
   it('should not cache broken packages', function() {
@@ -229,7 +224,7 @@ describe('Pack', function(){
     var pack = Pack(map);
     var js = pack.pack('a');
 
-    var ret = evaluate(js).require(1);
+    var ret = evaluate(js.code).require(1);
     assert.strictEqual(ret.b1, ret.b2);
   })
 })
@@ -238,20 +233,4 @@ function evaluate(js, ctx){
   var box = ctx || { console: console };
   vm.runInNewContext('require =' + js, box, 'vm');
   return box;
-}
-
-/**
- * Extract the "raw" sourcemap from the given `js`.
- *
- * @param {String} js
- * @return {Object}
- * @api private
- */
-
-function rawSourceMap(js) {
-  var marker = '//# sourceMappingURL=data:application/json;base64,';
-  var i = js.indexOf(marker);
-  var str = js.slice(i + marker.length);
-  var buf = new Buffer(str, 'base64');
-  return JSON.parse(buf);
 }
