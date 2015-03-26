@@ -1,4 +1,5 @@
 
+var convert = require('convert-source-map');
 var read = require('fs').readFileSync;
 var assert = require('assert');
 var fs = require('co-fs');
@@ -115,11 +116,18 @@ describe('Pack', function(){
     assert(!js.map);
   })
 
-  it('should contain sourcemaps when development is set', function(){
+  it('should contain sourcemaps when sourceMap is set', function(){
     var map = require('./fixtures/sourcemaps');
-    var js = Pack(map).development().pack('m');
+    var js = Pack(map).sourceMap(true).pack('m');
     assert(map.m.src == js.map.sourcesContent[js.map.sources.indexOf('/duo/m')]);
   })
+
+  it('should append an inline source-map to code when sourceMap is "inline"', function () {
+    var map = require('./fixtures/sourcemaps');
+    var js = Pack(map).sourceMap('inline').pack('m');
+    var sourceMap = convert.fromSource(js.code).toObject();
+    assert(map.m.src == sourceMap.sourcesContent[sourceMap.sources.indexOf('/duo/m')]);
+  });
 
   it('should handle css files', function() {
     var map = {};
