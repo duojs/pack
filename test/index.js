@@ -119,7 +119,8 @@ describe('Pack', function(){
   it('should contain sourcemaps when sourceMap is set', function(){
     var map = require('./fixtures/sourcemaps');
     var js = Pack(map).sourceMap(true).pack('m');
-    assert(map.m.src == js.map.sourcesContent[js.map.sources.indexOf('/duo/m')]);
+    var sourceMap = convert.fromJSON(js.map).toObject();
+    assert(map.m.src == sourceMap.sourcesContent[sourceMap.sources.indexOf('/duo/m')]);
   })
 
   it('should append an inline source-map to code when sourceMap is "inline"', function () {
