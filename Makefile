@@ -1,8 +1,9 @@
 
-BIN := ./node_modules/.bin/
+BIN := ./node_modules/.bin
+MOCHA ?= $(BIN)/mocha
 
 test: node_modules
-	@$(BIN)/gnode $(BIN)/_mocha
+	@$(MOCHA)
 
 node_modules: package.json
 	@npm install
