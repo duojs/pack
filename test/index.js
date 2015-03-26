@@ -119,16 +119,21 @@ describe('Pack', function(){
   it('should contain sourcemaps when sourceMap is set', function(){
     var map = require('./fixtures/sourcemaps');
     var js = Pack(map).sourceMap(true).pack('m');
+
+    // should link from code to map
+    assert(/\/\/# sourceMappingURL=m\.map$/.test(js.code));
+
+    // should include external map source
     var sourceMap = convert.fromJSON(js.map).toObject();
-    assert(map.m.src == sourceMap.sourcesContent[sourceMap.sources.indexOf('/duo/m')]);
+    assert.equal(map.m.src, sourceMap.sourcesContent[sourceMap.sources.indexOf('/duo/m')]);
   })
 
-  it('should append an inline source-map to code when sourceMap is "inline"', function () {
+  it('should append an inline source-map to code when sourceMap is "inline"', function(){
     var map = require('./fixtures/sourcemaps');
     var js = Pack(map).sourceMap('inline').pack('m');
     var sourceMap = convert.fromSource(js.code).toObject();
-    assert(map.m.src == sourceMap.sourcesContent[sourceMap.sources.indexOf('/duo/m')]);
-  });
+    assert.equal(map.m.src, sourceMap.sourcesContent[sourceMap.sources.indexOf('/duo/m')]);
+  })
 
   it('should handle css files', function() {
     var map = {};
