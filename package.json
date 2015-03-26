@@ -19,7 +19,7 @@
     "co-fs": "*",
     "co-mocha": "*",
     "gnode": "^0.1.1",
-    "mocha": "*",
+    "mocha": "^2.2.1",
     "source-map": "^0.1.39"
   },
   "scripts": {

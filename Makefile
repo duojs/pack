@@ -1,19 +1,11 @@
 
-BIN := ./node_modules/.bin
-MOCHA ?= $(BIN)/mocha
+NODE_FLAGS ?= $(shell node --v8-options | grep 'generators' | cut -d ' ' -f 3)
 
-# make sure the right flags are given to various node versions
-# (while still allowing override locally)
-ifeq ($(TRAVIS_NODE_VERSION),0.10)
-	MOCHA_FLAGS ?= --require gnode
-else ifeq ($(TRAVIS_NODE_VERSION),0.11)
-	MOCHA_FLAGS ?= --harmony-generators
-else ifeq ($(TRAVIS_NODE_VERSION),0.12)
-	MOCHA_FLAGS ?= --harmony-generators
-endif
+BIN := ./node_modules/.bin
+MOCHA ?= node $(NODE_FLAGS) $(BIN)/_mocha
 
 test: node_modules
-	@$(MOCHA) $(MOCHA_FLAGS)
+	$(MOCHA)
 
 node_modules: package.json
 	@npm install
