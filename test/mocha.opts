@@ -1,4 +1,4 @@
---require co-mocha
 --require gnode
+--require co-mocha
 --reporter spec
 --timeout 10s
