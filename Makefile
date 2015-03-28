@@ -6,7 +6,7 @@ BIN := ./node_modules/.bin
 MOCHA ?= $(NODE) $(NODE_FLAGS) $(BIN)/_mocha
 
 test: node_modules
-	$(MOCHA)
+	@$(MOCHA)
 
 node_modules: package.json
 	@npm install

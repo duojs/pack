@@ -1,4 +1,9 @@
 
+3.0.0 / 2015-03-28
+==================
+
+  * Adjusting the returned object to more intelligently include source-maps inline automatically.
+
 2.0.0 / 2015-03-02
 ==================
 
