@@ -1,4 +1,5 @@
 
+var convert = require('convert-source-map');
 var read = require('fs').readFileSync;
 var assert = require('assert');
 var fs = require('co-fs');
@@ -109,16 +110,38 @@ describe('Pack', function(){
 
   it('should not contain sourcemaps by default', function(){
     var map = {};
-    map.m = { id: 'm', type: 'js', entry: true, src: 'module.exports = "m"', deps: {} }
+    map.m = { id: 'm', type: 'js', entry: true, src: 'module.exports = "m"', deps: {} };
     var pack = Pack(map);
     var js = pack.pack('m');
     assert(!js.map);
   })
 
-  it('should contain sourcemaps when development is set', function(){
+  it('should reference an external source-map', function(){
     var map = require('./fixtures/sourcemaps');
-    var js = Pack(map).development().pack('m');
-    assert(map.m.src == js.map.sourcesContent[js.map.sources.indexOf('/duo/m')]);
+    var js = Pack(map).sourceMap(true).pack('m');
+
+    // should link from code to map
+    assert(/\/\/# sourceMappingURL=m\.map$/.test(js.code));
+
+    // should include external map source
+    var sourceMap = convert.fromJSON(js.map).toObject();
+    assert.equal(map.m.src, sourceMap.sourcesContent[sourceMap.sources.indexOf('/duo/m')]);
+  })
+
+  it('should reference the external source-map via relative path', function(){
+    var mapping = {};
+    mapping['a/b/c.js'] = { id: 'a/b/c.js', type: 'js', entry: true, src: 'module.exports = true;', deps: {} };
+    var js = Pack(mapping).sourceMap(true).pack('a/b/c.js');
+
+    // should link from code to map
+    assert(/\/\/# sourceMappingURL=c\.js\.map$/.test(js.code));
+  })
+
+  it('should append an inline source-map to code when sourceMap is "inline"', function(){
+    var map = require('./fixtures/sourcemaps');
+    var js = Pack(map).sourceMap('inline').pack('m');
+    var sourceMap = convert.fromSource(js.code).toObject();
+    assert.equal(map.m.src, sourceMap.sourcesContent[sourceMap.sources.indexOf('/duo/m')]);
   })
 
   it('should handle css files', function() {
