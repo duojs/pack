@@ -1,4 +1,9 @@
 
+3.0.3 / 2015-05-01
+==================
+
+  * Specifying `/require.js` to make sure it stays at the root of the source-map.
+
 3.0.2 / 2015-04-24
 ==================
 
