@@ -1,4 +1,9 @@
 
+3.0.4 / 2015-05-01
+==================
+
+  * Ensuring all source-map files are "absolute" paths. (from the duo root)
+
 3.0.3 / 2015-05-01
 ==================
 
