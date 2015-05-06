@@ -126,7 +126,7 @@ describe('Pack', function(){
     // should include external map source
     var sourceMap = convert.fromJSON(js.map).toObject();
     assert.equal(sourceMap.sourceRoot, '/duo');
-    assert.equal(map.m.src, sourceMap.sourcesContent[sourceMap.sources.indexOf('m')]);
+    assert.equal(map.m.src, sourceMap.sourcesContent[sourceMap.sources.indexOf('/m')]);
   })
 
   it('should reference the external source-map via relative path', function(){
@@ -143,7 +143,7 @@ describe('Pack', function(){
     var js = Pack(map).sourceMap('inline').pack('m');
     var sourceMap = convert.fromSource(js.code).toObject();
     assert.equal(sourceMap.sourceRoot, '/duo');
-    assert.equal(map.m.src, sourceMap.sourcesContent[sourceMap.sources.indexOf('m')]);
+    assert.equal(map.m.src, sourceMap.sourcesContent[sourceMap.sources.indexOf('/m')]);
   })
 
   it('should handle css files', function() {
