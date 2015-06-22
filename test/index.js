@@ -252,6 +252,13 @@ describe('Pack', function(){
     var ret = evaluate(js.code).require(1);
     assert.strictEqual(ret.b1, ret.b2);
   })
+
+  it('should support circular dependencies', function(){
+    var map = require('./fixtures/circular');
+    var pack = new Pack(map);
+    var js = pack.pack('A');
+    evaluate(js.code);
+  })
 })
 
 function evaluate(js, ctx){
