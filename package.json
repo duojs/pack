@@ -17,7 +17,6 @@
     "file-deps": "0.0.x"
   },
   "devDependencies": {
-    "co-fs": "*",
     "co-mocha": "*",
     "eslint": "^0.24.0",
     "eslint-config-duo": "0.0.1",
