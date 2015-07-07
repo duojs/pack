@@ -1,7 +1,7 @@
 exports.A = {
   id: "A",
   type: "js",
-  src: "console.log(require('./B'));",
+  src: "require('./B');",
   entry: true,
   deps: {
     "./B": "B"
