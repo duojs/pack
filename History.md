@@ -1,4 +1,16 @@
 
+3.0.5 / 2015-07-08
+==================
+
+  * require: Replace ternary with logical or
+  * test: Remove `console.log` from "circular" fixture
+  * require: Fix circular dependency loading
+  * eslint compliance
+  * adding eslint
+  * test: Greatly simplify "circular" fixture
+  * test: Expose a circular dependency resolution bug
+  * fixing tests
+
 3.0.4 / 2015-05-01
 ==================
 
