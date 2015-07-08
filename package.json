@@ -17,13 +17,11 @@
     "file-deps": "0.0.x"
   },
   "devDependencies": {
-    "co-fs": "*",
     "co-mocha": "*",
+    "eslint": "^0.24.0",
+    "eslint-config-duo": "0.0.1",
     "gnode": "^0.1.1",
     "mocha": "^2.2.1",
     "source-map": "^0.1.39"
-  },
-  "scripts": {
-    "test": "mocha --harmony-generators"
   }
 }
